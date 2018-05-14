@@ -22,7 +22,7 @@ namespace SlaeSolver
         public double[] B { get; private set; }
 
         
-        public bool IsCorrect(double[] decision, double epsillon = 0.01)
+        public bool IsCorrect(double[] decision, double epsillon = 1)
         {
             bool isCorrect = true;
             for (int i = 0; i < N && isCorrect; i++)

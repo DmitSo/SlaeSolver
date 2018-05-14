@@ -4,77 +4,75 @@
     {
         public double[] Solve(Slae slae)
         {
-            FindLU(slae, out double[][] L, out double[][] U);
-            var Y = CalcY(slae, L);
-            var X = CalcX(slae, U, Y);
+            FindLU(slae, out double[][] LU);
+            var Y = FindY(slae, LU);
+            var X = FindX(slae, LU, Y);
             return X;
         }
-        
-        
-        private static void FindLU(Slae slae, out double[][] L, out double[][] U)
+
+        private static void FindLU(Slae slae, out double[][] LU)
         {
-            L = new double[slae.N][];
-            //U = (double[][])slae.Matrix.Clone();
-            U = new double[slae.N][];
+            LU = new double[slae.N][];
+            for (int i = 0; i < LU.Length; i++)
+                LU[i] = new double[slae.N];
+
+            double sum = 0;
+
             for (int i = 0; i < slae.N; i++)
             {
-                L[i] = new double[slae.N];
-                U[i] = new double[slae.N];
-                System.Array.Copy(slae.Matrix[i], U[i], slae.N);
-            }
-            
-            for (int i = 0; i < slae.N; i++)
-                for (int j = i; j >= 0; j--)
-                    L[j][i] = U[j][i] / U[i][i];
+                for (int j = i; j < slae.N; j++)
+                {
+                    sum = 0;
+                    for (int k = 0; k < i; k++)
+                        sum += LU[i][k] * LU[k][j];
+                    LU[i][j] = slae.Matrix[i][j] - sum;
+                }
 
-            for (int k = 1; k < slae.N; k++)
-            {
-                for (int i = 0; i < slae.N; i++)
-                    for (int j = i; j >= 0; j--)
-                        L[j][i] = U[j][i] / U[i][i];
-
-                for (int i = k; i < slae.N; i++)
-                    for (int j = k - 1; j < slae.N; j++)
-                        U[i][j] = U[i][j] - L[i][k - 1] * U[k - 1][j];
+                for (int j = i + 1; j < slae.N; j++)
+                {
+                    sum = 0;
+                    for (int k = 0; k < i; k++)
+                        sum += LU[j][k] * LU[k][i];
+                    LU[j][i] = (1 / LU[i][i]) * (slae.Matrix[j][i] - sum);
+                }
             }
         }
 
-        private static double[] CalcY(Slae slae, double[][] L)
+        private double[] FindY(Slae slae, double[][] LU)
         {
-            double[] Y = new double[slae.N];
+            double[] y = new double[slae.N];
+            double sum = 0;
 
             for (int i = 0; i < slae.N; i++)
             {
-                double sum = 0;
-                for (int j = 0; j < i; j++)
-                    sum += L[i][j] * Y[j];
-                Y[i] = (slae.B[i] - sum) / L[i][i];
+                sum = 0;
+                for (int k = 0; k < i; k++)
+                    sum += LU[i][k] * y[k];
+                y[i] = slae.B[i] - sum;
             }
 
-            return Y;
+            return y;
         }
 
-        private static double[] CalcX(Slae slae, double[][] U, double[] Y)
+        public double[] FindX(Slae slae, double[][] LU, double[] y)
         {
-            double[] X = new double[slae.N];
+            double[] x = new double[slae.N];
+            double sum = 0;
 
             for (int i = slae.N - 1; i >= 0; i--)
             {
-                double sum = 0;
-
-                for (int j = i + 1; j < slae.N; j++)
-                    sum += U[i][j] * X[j];
-
-                X[i] = (Y[i] - sum) / U[i][i];
+                sum = 0;
+                for (int k = i + 1; k < slae.N; k++)
+                    sum += LU[i][k] * x[k];
+                x[i] = (y[i] - sum) / LU[i][i];
             }
 
-            return X;
+            return x;
         }
 
         public override string ToString()
         {
             return "LU-Decomposition";
         }
-
     }
 }

@@ -54,14 +54,14 @@ namespace SlaeSolver
             this.lbCpuLoad = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvResults = new System.Windows.Forms.DataGridView();
-            this.lbLog = new System.Windows.Forms.ListBox();
-            this.timerPerfomance = new System.Windows.Forms.Timer(this.components);
-            this.sfdSave = new System.Windows.Forms.SaveFileDialog();
             this.ColName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColTimeEstimated = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColRoots = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ColSave = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.lbLog = new System.Windows.Forms.ListBox();
+            this.timerPerfomance = new System.Windows.Forms.Timer(this.components);
+            this.sfdSave = new System.Windows.Forms.SaveFileDialog();
             this.toolStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -79,7 +79,7 @@ namespace SlaeSolver
             this.btnShowAllResults});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(734, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(811, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -113,7 +113,7 @@ namespace SlaeSolver
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(734, 219);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(811, 271);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // tableLayoutPanel3
@@ -130,7 +130,7 @@ namespace SlaeSolver
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(348, 213);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(425, 265);
             this.tableLayoutPanel3.TabIndex = 4;
             // 
             // chartMem
@@ -141,7 +141,7 @@ namespace SlaeSolver
             legend1.Enabled = false;
             legend1.Name = "Legend1";
             this.chartMem.Legends.Add(legend1);
-            this.chartMem.Location = new System.Drawing.Point(3, 119);
+            this.chartMem.Location = new System.Drawing.Point(3, 145);
             this.chartMem.Name = "chartMem";
             this.chartMem.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
             series1.ChartArea = "ChartArea1";
@@ -151,7 +151,7 @@ namespace SlaeSolver
             series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             this.chartMem.Series.Add(series1);
-            this.chartMem.Size = new System.Drawing.Size(342, 91);
+            this.chartMem.Size = new System.Drawing.Size(419, 117);
             this.chartMem.TabIndex = 2;
             this.chartMem.Text = "chart2";
             title1.Name = "Title1";
@@ -176,7 +176,7 @@ namespace SlaeSolver
             series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             this.chartCpu.Series.Add(series2);
-            this.chartCpu.Size = new System.Drawing.Size(342, 90);
+            this.chartCpu.Size = new System.Drawing.Size(419, 116);
             this.chartCpu.TabIndex = 0;
             this.chartCpu.Text = "chart1";
             title2.Name = "Title1";
@@ -191,7 +191,7 @@ namespace SlaeSolver
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(342, 14);
+            this.panel1.Size = new System.Drawing.Size(419, 14);
             this.panel1.TabIndex = 1;
             // 
             // lbFullT
@@ -233,7 +233,7 @@ namespace SlaeSolver
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(374, 213);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(374, 265);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // dgvResults
@@ -256,27 +256,6 @@ namespace SlaeSolver
             this.dgvResults.Size = new System.Drawing.Size(368, 94);
             this.dgvResults.TabIndex = 2;
             this.dgvResults.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvResults_CellContentClick);
-            // 
-            // lbLog
-            // 
-            this.lbLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbLog.FormattingEnabled = true;
-            this.lbLog.Location = new System.Drawing.Point(3, 103);
-            this.lbLog.Name = "lbLog";
-            this.lbLog.ScrollAlwaysVisible = true;
-            this.lbLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.lbLog.Size = new System.Drawing.Size(368, 107);
-            this.lbLog.TabIndex = 3;
-            // 
-            // timerPerfomance
-            // 
-            this.timerPerfomance.Interval = 1000;
-            this.timerPerfomance.Tick += new System.EventHandler(this.TimerPerfomance_Tick);
-            // 
-            // sfdSave
-            // 
-            this.sfdSave.DefaultExt = "txt";
-            this.sfdSave.Filter = ".txt files|*.txt|All files|*.*";
             // 
             // ColName
             // 
@@ -324,11 +303,32 @@ namespace SlaeSolver
             this.ColSave.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.ColSave.Width = 35;
             // 
+            // lbLog
+            // 
+            this.lbLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbLog.FormattingEnabled = true;
+            this.lbLog.Location = new System.Drawing.Point(3, 103);
+            this.lbLog.Name = "lbLog";
+            this.lbLog.ScrollAlwaysVisible = true;
+            this.lbLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.lbLog.Size = new System.Drawing.Size(368, 159);
+            this.lbLog.TabIndex = 3;
+            // 
+            // timerPerfomance
+            // 
+            this.timerPerfomance.Interval = 1000;
+            this.timerPerfomance.Tick += new System.EventHandler(this.TimerPerfomance_Tick);
+            // 
+            // sfdSave
+            // 
+            this.sfdSave.DefaultExt = "txt";
+            this.sfdSave.Filter = ".txt files|*.txt|All files|*.*";
+            // 
             // FormExecute
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(734, 244);
+            this.ClientSize = new System.Drawing.Size(811, 296);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.toolStrip1);
             this.MinimumSize = new System.Drawing.Size(750, 275);

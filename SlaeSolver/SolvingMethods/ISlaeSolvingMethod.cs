@@ -1,6 +1,6 @@
 ﻿namespace SlaeSolver
 {
-    public delegate double[] SlaeSolvingMethod(Slae slae);
+    //public delegate double[] SlaeSolvingMethod(Slae slae);
 
     public interface ISlaeSolvingMethod
     {

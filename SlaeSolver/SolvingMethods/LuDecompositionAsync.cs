@@ -12,79 +12,74 @@ namespace SlaeSolver
     {
         public double[] Solve(Slae slae)
         {
-            FindLU(slae, out double[][] L, out double[][] U);
-            var Y = CalcY(slae, L);
-            var X = CalcX(slae, U, Y);
+            FindLU(slae, out double[][] LU);
+            var Y = FindY(slae, LU);
+            var X = FindX(slae, LU, Y);
             return X;
         }
 
-        private static void FindLU(Slae slae, out double[][] L, out double[][] U)
+        private static void FindLU(Slae slae, out double[][] lu)
         {
-            double[][] Ltmp = new double[slae.N][];
-            double[][] Utmp = new double[slae.N][];
-
-            Parallel.For(0, slae.N, (i) =>
-            {
-                Ltmp[i] = new double[slae.N];
-                Utmp[i] = new double[slae.N];
-                System.Array.Copy(slae.Matrix[i], Utmp[i], slae.N);
-            });
-
-            Parallel.For(0, slae.N, i =>
-            {
-                for (int j = i; j >= 0; j--)
-                    Ltmp[j][i] = Utmp[j][i] / Utmp[i][i];
-            });
+            double[][] LU = new double[slae.N][];
+            for (int i = 0; i < LU.Length; i++)
+                LU[i] = new double[slae.N];
             
-
-            Parallel.For(1, slae.N, k =>
+            for (int i = 0; i < slae.N; i++)
             {
-                for (int i = 0; i < slae.N; i++)
-                    for (int j = i; j >= 0; j--)
-                        Ltmp[j][i] = Utmp[j][i] / Utmp[i][i];
+                Parallel.For(i, slae.N, j =>
+                {
+                    double sum = 0;
+                    for (int k = 0; k < i; k++)
+                        sum += LU[i][k] * LU[k][j];
+                    LU[i][j] = slae.Matrix[i][j] - sum;
+                });
 
-                for (int i = k; i < slae.N; i++)
-                    for (int j = k - 1; j < slae.N; j++)
-                        Utmp[i][j] = Utmp[i][j] - Ltmp[i][k - 1] * Utmp[k - 1][j];
-            });
-            L = Ltmp;
-            U = Utmp;
+                Parallel.For(i + 1, slae.N, j =>
+                {
+                    double sum = 0;
+                    for (int k = 0; k < i; k++)
+                        sum += LU[j][k] * LU[k][i];
+                    LU[j][i] = (slae.Matrix[j][i] - sum) / LU[i][i];
+                });
+            }
+            //});
+            lu = LU;
         }
-        
-        // non paralleled
-        private static double[] CalcY(Slae slae, double[][] L)
+
+        private double[] FindY(Slae slae, double[][] LU)
         {
-            double[] Y = new double[slae.N];
-            for(int i = 0; i < slae.N; i++)
+            double[] y = new double[slae.N];
+
+            for (int i = 0; i < slae.N; i++)
             {
                 double sum = 0;
 
-                for (int j = 0; j < i; j++)                
-                    sum += L[i][j] * Y[j];
-                
-                Y[i] = (slae.B[i] - sum) / L[i][i];
+                for (int k = 0; k < i; k++)
+                    sum += LU[i][k] * y[k];
+
+                y[i] = slae.B[i] - sum;
             }
 
-            return Y;
+            return y;
         }
 
-        // not paralleled
-        private static double[] CalcX(Slae slae, double[][] U, double[] Y)
+        public double[] FindX(Slae slae, double[][] LU, double[] y)
         {
-            double[] X = new double[slae.N];
+            double[] x = new double[slae.N];
 
-            for(int i = slae.N-1; i >= 0; i--)
+            for (int i = slae.N - 1; i >= 0; i--)
             {
                 double sum = 0;
-                for (int j = i + 1; j < slae.N; j++)
-                    sum += U[i][j] * X[j];
 
-                X[i] = (Y[i] - sum) / U[i][i];
+                for (int k = i + 1; k < slae.N; k++)
+                    sum += LU[i][k] * x[k];
+
+                x[i] = (y[i] - sum) / LU[i][i];
             }
 
-            return X;
+            return x;
         }
-        
+
         public override string ToString()
         {
             return "LU-Decomposition (multithread)";

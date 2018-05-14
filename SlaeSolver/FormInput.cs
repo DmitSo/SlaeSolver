@@ -103,7 +103,7 @@ namespace SlaeSolver
                 slaeSolvingMethods.Add(new LuDecompositionAsync());
             if (cbGaussian.Checked)
                 slaeSolvingMethods.Add(new GaussianMethod());
-
+            
             if (slaeSolvingMethods.Count == 0)
                 NotificationManager.ShowExclamation("Choose solving methods before executing");
             else
