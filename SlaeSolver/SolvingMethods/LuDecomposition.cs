@@ -15,14 +15,12 @@
             LU = new double[slae.N][];
             for (int i = 0; i < LU.Length; i++)
                 LU[i] = new double[slae.N];
-
-            double sum = 0;
-
+            
             for (int i = 0; i < slae.N; i++)
             {
                 for (int j = i; j < slae.N; j++)
                 {
-                    sum = 0;
+                    double sum = 0;
                     for (int k = 0; k < i; k++)
                         sum += LU[i][k] * LU[k][j];
                     LU[i][j] = slae.Matrix[i][j] - sum;
@@ -30,7 +28,7 @@
 
                 for (int j = i + 1; j < slae.N; j++)
                 {
-                    sum = 0;
+                    double sum = 0;
                     for (int k = 0; k < i; k++)
                         sum += LU[j][k] * LU[k][i];
                     LU[j][i] = (1 / LU[i][i]) * (slae.Matrix[j][i] - sum);

@@ -214,7 +214,7 @@ namespace SlaeSolver
                     dgvResults[3, activeMethod].Value = "Roots";
                     dgvResults[4, activeMethod].Value = "Save";
 
-                    AddLog(slae.IsCorrect(results[activeMethod], 5) ? "YES" : "NO");
+                    AddLog(slae.IsCorrect(results[activeMethod], out int errorIndex, 5) ? "CORRECT" : $"INCORRECT [{errorIndex}]");
                 }
                 catch (Exception exc)
                 {

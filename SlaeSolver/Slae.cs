@@ -42,7 +42,29 @@ namespace SlaeSolver
             }
             return isCorrect;
         }
-        
+
+        public bool IsCorrect(double[] decision, out int errorIndex, double epsillon = 1)
+        {
+            bool isCorrect = true;
+            errorIndex = -1;
+            for (int i = 0; i < N && isCorrect; i++)
+            {
+                double s = 0;
+                for (int j = 0; j < N; j++)
+                {
+                    s += decision[j] * Matrix[i][j];
+                }
+                double difference = Math.Abs(Math.Abs(s) - Math.Abs(B[i]));
+                if (difference > epsillon)
+                {
+                    System.Diagnostics.Debug.WriteLine($"{Math.Abs(s)} - {Math.Abs(B[i])}" +
+                        $" = {difference} AT row [{i}]");
+                    isCorrect = false;
+                    errorIndex = i;
+                }
+            }
+            return isCorrect;
+        }
 
         public double this[int i, int j]
         {
@@ -72,6 +94,7 @@ namespace SlaeSolver
         /// <param name="N">Size of the matrix NxN</param>
         public Slae(int N)
         {
+            Random random = new Random();
             Matrix = new double[N][];
             for (int i = 0; i < N; i++)
             {
@@ -80,8 +103,6 @@ namespace SlaeSolver
             }
             B = new double[N];
 
-            Random random = new Random();
-
             for (int i = 0; i < N; i++)
             {
                 var next = random.Next();
@@ -89,49 +110,17 @@ namespace SlaeSolver
                 int k1 = random.Next() % N;
                 int k2 = random.Next() % N;
 
-                for (int j = 0; j < N; j++)
+                for (int j = 0; j < i; j++)
                 {
-                    if(j != i && k2 != i)
-                        Matrix[k2][j] += Matrix[k1][j] * k0 % 25;
-                    B[i] += (j * (k0 * (k1 + k2)) * random.Next())%25;
+                    Matrix[j][i] = Matrix[i][j] = random.NextDouble() * k0 % 25;
+                    B[i] += (j * (k0 * (k1 + k2)) * random.NextDouble()) % 25;
                 }
             }
-            
+
             for (int i = 0; i < N; i++)
                 B[i] = (B[i] + random.Next()) % 25;
         }
-        /*
-        //TODO REMOVE
-        public Slae(int N, int fokU)
-        {
-            Random random = new Random();
-            Matrix = new double[N][];
-            for (int i = 0; i < N; i++)
-            {
-                Matrix[i] = new double[N];
-                //Matrix[i][i] = 1;
-            }
-            B = new double[N];
-
-            for (int i = 0; i < N; i++)
-            {
-                for (int j = 0; j < N; j++)
-                {
-                    Matrix[i][i] = random.Next() % 2;
-
-                    if ((i != j) && (i < j))
-                        Matrix[i][j] = random.Next() % 2 - random.Next() % 2;//заполняем массив случайными значениями
-
-                    Matrix[j][i] = Matrix[i][j];
-                }
-            }
-
-            for (int j = 0; j < N; j++)
-            {
-                B[j] = random.Next() % 2 - random.Next() % 2; // заполняем массив случайными значениями
-            }
-        }
-        */
+        
         public string GetSLAEString()
         {
             return GetSLAEString(Matrix, B);
