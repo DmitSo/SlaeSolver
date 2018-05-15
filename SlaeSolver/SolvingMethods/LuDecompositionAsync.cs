@@ -12,13 +12,13 @@ namespace SlaeSolver
     {
         public double[] Solve(Slae slae)
         {
-            FindLU(slae, out double[][] LU);
+            double[][] LU = FindLU(slae);
             var Y = FindY(slae, LU);
             var X = FindX(slae, LU, Y);
             return X;
         }
 
-        private static void FindLU(Slae slae, out double[][] lu)
+        private static double[][] FindLU(Slae slae)
         {
             double[][] LU = new double[slae.N][];
             for (int i = 0; i < LU.Length; i++)
@@ -42,8 +42,8 @@ namespace SlaeSolver
                     LU[j][i] = (slae.Matrix[j][i] - sum) / LU[i][i];
                 });
             }
-            //});
-            lu = LU;
+
+            return LU;
         }
 
         private double[] FindY(Slae slae, double[][] LU)

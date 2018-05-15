@@ -4,15 +4,15 @@
     {
         public double[] Solve(Slae slae)
         {
-            FindLU(slae, out double[][] LU);
+            double[][] LU = FindLU(slae);
             var Y = FindY(slae, LU);
             var X = FindX(slae, LU, Y);
             return X;
         }
 
-        private static void FindLU(Slae slae, out double[][] LU)
+        private static double[][] FindLU(Slae slae)
         {
-            LU = new double[slae.N][];
+            double[][] LU = new double[slae.N][];
             for (int i = 0; i < LU.Length; i++)
                 LU[i] = new double[slae.N];
             
@@ -34,12 +34,13 @@
                     LU[j][i] = (1 / LU[i][i]) * (slae.Matrix[j][i] - sum);
                 }
             }
+            return LU;
         }
 
-        private double[] FindY(Slae slae, double[][] LU)
+        private static double[] FindY(Slae slae, double[][] LU)
         {
             double[] y = new double[slae.N];
-            double sum = 0;
+            double sum;
 
             for (int i = 0; i < slae.N; i++)
             {
@@ -52,10 +53,10 @@
             return y;
         }
 
-        public double[] FindX(Slae slae, double[][] LU, double[] y)
+        public static double[] FindX(Slae slae, double[][] LU, double[] y)
         {
             double[] x = new double[slae.N];
-            double sum = 0;
+            double sum;
 
             for (int i = slae.N - 1; i >= 0; i--)
             {
